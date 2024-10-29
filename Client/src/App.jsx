@@ -6,12 +6,11 @@ import Start from './Component/Start';
 
 function App() {
   return (
-    <div className="bg-[#F8F4EA]">
+    <div className="min-h-screen flex flex-col bg-[#F8F4EA]">
       <Router>
         <Routes>
-       
           <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} /> 
+          <Route path="/register" element={<Register />} />
           <Route path="/chats" element={<Home />} />
           <Route path="/" element={<Start />} />
         </Routes>

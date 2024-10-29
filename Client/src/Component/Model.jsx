@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
@@ -45,7 +44,7 @@ function Model(props) {
 
     const handleClick = async (user) => {
         if (members.some(member => member._id === user._id)) {
-            alert("User is already a member of the group."); // Provide feedback
+            alert("User is already a member of the group.");
             return;
         }
         try {
@@ -99,7 +98,7 @@ function Model(props) {
 
     useEffect(() => {
         const searchChange = async () => {
-            if (!search) return; // Don't search if input is empty
+            if (!search) return;
             setIsLoading(true);
             try {
                 const { data } = await searchUsers(search);
@@ -125,7 +124,7 @@ function Model(props) {
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
-                <Box sx={style}>
+                <Box sx={style} className="animate__animated animate__fadeIn">
                     {activeChat?.isGroup ? (
                         <>
                             <h5 className='text-[22px] font-semibold tracking-wide text-center text-[#111b21]'>{getChatName(activeChat, activeUser)}</h5>
@@ -162,7 +161,7 @@ function Model(props) {
                                     <Search isLoading={isLoading} handleClick={handleClick} search={search} searchResults={searchResults} />
 
                                     <div className='flex justify-end gap-x-3 mt-3'>
-                                        <button onClick={updateBtn} className='bg-[#0086ea] transition hover:bg-[#00A1C9]  px-4 py-1 text-[10.6px] tracking-wide text-[#fff]'>Update</button>
+                                        <button onClick={updateBtn} className='bg-[#0086ea] transition hover:bg-[#00A1C9] px-4 py-1 text-[10.6px] tracking-wide text-[#fff]'>Update</button>
                                         <button onClick={leaveGroup} className='bg-[#880808] hover:bg-[#A52A2A] transition delay-150 px-4 py-1 text-[10.6px] tracking-wide text-[#fff]'>Leave</button>
                                     </div>
                                 </div>

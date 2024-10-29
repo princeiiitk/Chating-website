@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Model from '../Component/Model';
@@ -13,10 +12,8 @@ import Picker from '@emoji-mart/react';
 import { getChatName } from '../Utiles/Logic.js';
 import Typing from '../Component/Typing.jsx';
 
-
 const ENDPOINT = process.env.VITE_SERVER_URL;
 let socket, selectedChatCompare;
-
 
 export default function Chatpage(props) {
     const { activeChat, notifications } = useSelector((state) => state.chats);
@@ -29,7 +26,8 @@ export default function Chatpage(props) {
     const [loading, setLoading] = useState(false);
     const [showPicker, setShowPicker] = useState(false);
     const activeUser = useSelector((state) => state.activeUser);
-   console.log("pila",activeUser)
+    console.log("Active User:", activeUser);
+
     const keyDownFunction = async (e) => {
         if ((e.key === "Enter" || e.type === "click") && message) {
             setMessage("");
@@ -94,11 +92,9 @@ export default function Chatpage(props) {
         });
     }, [notifications, dispatch]);
 
-  
-
     if (loading) {
         return (
-            <div className={props.className}>
+            <div className={`${props.className} flex justify-center items-center h-full`}>
                 <Loading />
             </div>
         );
@@ -107,27 +103,21 @@ export default function Chatpage(props) {
     return (
         <>
             {activeChat ? (
-                <div className={props.className}>
-                    <div className='flex justify-between items-center px-5 bg-[#ffff] w-[100%]'>
-                        <div className='flex items-center gap-x-[10px]'>
-                            <div className='flex flex-col items-start justify-center'>
-                                <h5 className='text-[17px] text-[#2b2e33] font-bold tracking-wide'>{getChatName(activeChat, activeUser)}</h5>
-                            </div>
+                <div className={`${props.className} flex flex-col h-full`}>
+                    <div className='flex justify-between items-center bg-white p-4 shadow'>
+                        <div className='flex items-center gap-2'>
+                            <h5 className='text-lg font-bold text-gray-800'>{getChatName(activeChat, activeUser)}</h5>
                         </div>
-                        <div>
-                            <Model />
-                        </div>
+                        <Model />
                     </div>
-                    <div className='scrollbar-hide w-[100%] h-[70vh] md:h-[66vh] lg:h-[69vh] flex flex-col overflow-y-scroll p-4'>
+                    <div className='flex-grow overflow-y-auto p-4 scrollbar-hide'>
                         <MessageHistory typing={isTyping} messages={messages} />
-                        <div className='ml-7 -mb-10'>
-                            {isTyping ? <Typing width="100" height="100" /> : ""}
-                        </div>
+                        {isTyping && <Typing width="100" height="100" />}
                     </div>
-                    <div className='absolute left-[31%] bottom-[8%]'>
+                    <div className='p-4'>
                         {showPicker && <Picker data={data} onEmojiSelect={(e) => setMessage((prev) => prev + e.native)} />}
-                        <div className='border-[1px] border-[#aabac8] px-6 py-3 w-[360px] sm:w-[400px] md:w-[350px] lg:w-[400px] rounded-t-[10px]'>
-                            <form onKeyDown={keyDownFunction} onSubmit={(e) => e.preventDefault()}>
+                        <div className='border border-gray-300 rounded-t-lg'>
+                            <form onKeyDown={keyDownFunction} onSubmit={(e) => e.preventDefault()} className='flex'>
                                 <input
                                     onChange={(e) => {
                                         setMessage(e.target.value);
@@ -147,36 +137,30 @@ export default function Chatpage(props) {
                                             }
                                         }, time);
                                     }}
-                                    className='focus:outline-0 w-[100%] bg-[#f8f9fa]'
+                                    className='flex-grow focus:outline-none border-b border-gray-300 p-2'
                                     type="text"
                                     name="message"
                                     placeholder="Enter message"
                                     value={message}
                                 />
+                                <button onClick={keyDownFunction} className='bg-gray-200 border border-gray-300 text-sm px-3 py-2 rounded-lg ml-2'>Send</button>
                             </form>
                         </div>
-
-                        <div className='border-x-[1px] border-b-[1px] bg-[#f8f9fa] border-[#aabac8] px-6 py-3 w-[360px] sm:w-[400px] md:w-[350px] lg:w-[400px] rounded-b-[10px] h-[50px]'>
-                            <div className='flex justify-between items-start'>
-                                <div className='cursor-pointer' onClick={() => setShowPicker(!showPicker)}>
-                                    {showPicker ? <BsFillEmojiSmileFill className='w-[20px] h-[20px] text-[#ffb02e]' /> : <BsEmojiSmile className='w-[20px] h-[20px]' />}
-                                </div>
-                                <button onClick={keyDownFunction} className='bg-[#f8f9fa] border-[2px] border-[#d4d4d4] text-[14px] px-2 py-[3px] text-[#9e9e9e] font-medium rounded-[7px] -mt-1'>Send</button>
-                            </div>
+                        <div className='flex justify-end'>
+                            <button onClick={() => setShowPicker(!showPicker)} className='mt-2'>
+                                {showPicker ? <BsFillEmojiSmileFill className='text-yellow-500' /> : <BsEmojiSmile />}
+                            </button>
                         </div>
                     </div>
                 </div>
             ) : (
                 <div className={props.className}>
-                    <div className='relative'>
-                        <div className='absolute top-[40vh] left-[44%] flex flex-col items-center justify-center gap-y-3'>
-                            <img className='w-[50px] h-[50px] rounded-[25px]' alt="User profile" src={activeUser.profilePic} />
-                                <h3 className='text-[#111b21] text-[20px] font-medium tracking-wider'>Welcome <span className='text-[#166e48] text-[19px] font-bold'>{activeUser.name}</span></h3>
-                        </div>
+                    <div className='flex flex-col items-center justify-center h-full'>
+                        <img className='w-12 h-12 rounded-full' alt="User profile" src={activeUser.profilePic} />
+                        <h3 className='text-lg font-medium mt-2'>Welcome <span className='font-bold text-green-600'>{activeUser.name}</span></h3>
                     </div>
                 </div>
             )}
         </>
     );
 }
-;

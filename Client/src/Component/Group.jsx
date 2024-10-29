@@ -14,9 +14,10 @@ const style = {
     left: '50%',
     transform: 'translate(-50%, -50%)',
     minWidth: 400,
-    bgcolor: 'background.paper',
+    bgcolor: '#2e2e2e',  
     boxShadow: 24,
     p: 2,
+    borderRadius: '8px',  
 };
 
 function Group() {
@@ -36,13 +37,11 @@ function Group() {
         setChatName("");
     };
 
-    const handleFormSearch = async (e) => {
-        setSearch(e.target.value);
-    };
+    const handleFormSearch = (e) => setSearch(e.target.value);
 
     const handleClick = (user) => {
         if (!selectedUsers.some((u) => u._id === user._id)) {
-            setSelectedUsers([...selectedUsers, user]);
+            setSelectedUsers((prevUsers) => [...prevUsers, user]);
         }
     };
 
@@ -84,48 +83,46 @@ function Group() {
 
     return (
         <>
-            <button className='mt-1 transition duration-150 ease-in-out' onClick={handleOpen}>
-                <div className='flex justify-start border-r-2'>
-                    <button className='text-[11px] font-normal tracking-wide flex items-center gap-x-1 bg-[#f6f6f6] text-[#1f2228] py-1 -mb-7 mt-2 px-2'>
-                        New Group <BsPlusLg />
-                    </button>
-                </div>
+            <button
+                className='mt-2 flex items-center gap-1 text-sm font-medium bg-gray-800 text-white py-1 px-2 rounded-md hover:bg-gray-700 transition ease-in-out'
+                onClick={handleOpen}
+            >
+                New Group <BsPlusLg />
             </button>
             <Modal
                 open={open}
                 onClose={handleClose}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
+                aria-labelledby="create-group-modal-title"
+                aria-describedby="create-group-modal-description"
             >
                 <Box sx={style}>
-                    <h5 className='text-[18px] text-[#111b21] font-medium text-center'>Create A Group</h5>
-                    <form onSubmit={(e) => e.preventDefault()} className='flex flex-col gap-y-3 mt-3'>
+                    <h5 id="create-group-modal-title" className='text-lg text-white font-semibold text-center'>
+                        Create A Group
+                    </h5>
+                    <form onSubmit={(e) => e.preventDefault()} className='flex flex-col gap-3 mt-3'>
                         <input
                             onChange={(e) => setChatName(e.target.value)}
                             value={chatName}
-                            className="border-[#c4ccd5] border-[1px] text-[13.5px] py-[4px] px-2 w-[100%]"
+                            className="border border-gray-600 bg-gray-900 text-white text-sm py-2 px-3 rounded w-full"
                             type="text"
-                            name="chatName"
                             placeholder="Group Name"
                             required
                         />
                         <input
                             onChange={handleFormSearch}
                             value={search}
-                            className="border-[#c4ccd5] border-[1px] text-[13.5px] py-[4px] px-2 w-[100%]"
+                            className="border border-gray-600 bg-gray-900 text-white text-sm py-2 px-3 rounded w-full"
                             type="text"
-                            name="users"
                             placeholder="Add users"
                         />
-                        <div className='flex -mt-2'>
+                        <div className='flex flex-wrap gap-2'>
                             {selectedUsers.map((user) => (
                                 <button
                                     key={user._id}
                                     onClick={() => deleteSelected(user)}
-                                    className='flex items-center gap-x-1 bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded border border-green-400'
+                                    className='flex items-center gap-1 bg-green-800 text-white text-xs font-medium px-3 py-1 rounded-md border border-green-500'
                                 >
-                                    <span>{user.name}</span>
-                                    <RxCross2 />
+                                    {user.name} <RxCross2 />
                                 </button>
                             ))}
                         </div>
@@ -138,7 +135,7 @@ function Group() {
                         <div className='flex justify-end mt-3'>
                             <button
                                 onClick={handleSubmit}
-                                className='bg-[#0086ea] text-white text-[15px] font-medium px-2 py-1 tracking-wide'
+                                className='bg-blue-600 text-white text-base font-medium px-3 py-2 rounded-md hover:bg-blue-500 transition ease-in-out'
                                 type='submit'
                             >
                                 Create

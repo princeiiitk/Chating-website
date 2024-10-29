@@ -1,8 +1,6 @@
+import PropTypes from 'prop-types';
 
-
-import PropTypes from 'prop-types'; 
-
-function Typing({ className, width, height }) {
+function Typing({ className = '', width = 100, height = 100 }) { 
     return (
         <div className={className}>
             <lottie-player
@@ -12,16 +10,17 @@ function Typing({ className, width, height }) {
                 style={{ width: `${width}px`, height: `${height}px` }}
                 loop
                 autoplay
+                aria-label="Typing animation" 
+                role="img" 
             ></lottie-player>
         </div>
     );
 }
 
-
 Typing.propTypes = {
     className: PropTypes.string, 
     width: PropTypes.number.isRequired, 
-    height: PropTypes.number.isRequired,
+    height: PropTypes.number.isRequired, 
 };
 
 export default Typing;
